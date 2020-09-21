@@ -4,18 +4,21 @@
 ]]
 
 if CLIENT then
-    surface.CreateFont("aniplayer_1", {size = 22, weight = 300, antialias = true, extended = true, font = "Tahoma"})
+    local color_bg = Color(102, 102, 102)
+    local color_top = Color(250, 250, 250)
+
+    local color_btn_depressed = Color(128, 0, 0)
+    local color_btn_hovered = Color(255, 0, 0)
 
     construction.Register("AniPlayer", {
         {
             type = "EditablePanel",
             init = function(pnl)
-                pnl:SetPos(0, 0)
-                pnl:SetSize(ScrW(), ScrH())
+                pnl:Dock(FILL)
                 pnl:MakePopup()
 
                 pnl.Paint = function(self, w, h)
-                    surface.SetDrawColor(102, 102, 102)
+                    surface.SetDrawColor(color_bg)
                     surface.DrawRect(0, 0, w, h)
                 end
             end,
@@ -27,23 +30,11 @@ if CLIENT then
                         pnl:Dock(TOP)
                         pnl:DockPadding(12, 0, 0, 0)
                         pnl.Paint = function(_, w, h)
-                            surface.SetDrawColor(color_white)
+                            surface.SetDrawColor(color_top)
                             surface.DrawRect(0, 0, w, h)
                         end
                     end,
                     children = {
-                        {
-                            type = "DLabel",
-                            init = function(pnl)
-                                pnl:SetTextColor(color_black)
-                                pnl:SetContentAlignment(4)
-                                pnl:SetFont("aniplayer_1")
-                                pnl:SetColor(color_black)
-                                pnl:SetText("AniPlayer")
-                                pnl:SizeToContents()
-                                pnl:Dock(LEFT)
-                            end
-                        },
                         {
                             type = "DButton",
                             init = function(pnl)
@@ -55,11 +46,15 @@ if CLIENT then
 
                                 pnl.Paint = function(self, w, h)
                                     if self.Depressed then
-                                        surface.SetDrawColor(128, 0, 0)
+                                        self:SetColor(color_white)
+                                        surface.SetDrawColor(color_btn_depressed)
                                         surface.DrawRect(0, 0, w, h)
                                     elseif self.Hovered then
-                                        surface.SetDrawColor(255, 0, 0)
+                                        self:SetColor(color_white)
+                                        surface.SetDrawColor(color_btn_hovered)
                                         surface.DrawRect(0, 0, w, h)
+                                    else
+                                        self:SetColor(color_black)
                                     end
                                 end
 
@@ -74,7 +69,6 @@ if CLIENT then
                     type = "DPanel",
                     init = function(pnl)
                         pnl:Dock(FILL)
-                        pnl:DockMargin(12, 12, 12, 12)
                     end,
                     children = {
                         {
