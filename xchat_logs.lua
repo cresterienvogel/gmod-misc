@@ -15,11 +15,12 @@ CFG.Types = {
 }
 
 CFG.PostLog = function(msg, clr)
-    http.Post(xChat.Config.Handler .. "custom.php", {
-        webhook = CFG.Webhook, 
-        message = msg, 
-        color = clr or "ff957e"
-    })
+	http.Post(xChat.Config.Handler .. "lib/custom.php", {
+		webhook = CFG.Webhook, 
+		message = msg, 
+		color = clr or "ff957e",
+		secret = xChat.Config.Secret
+	})
 end
 
 --[[
