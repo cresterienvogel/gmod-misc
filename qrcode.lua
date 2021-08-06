@@ -6,6 +6,11 @@
 function QRCode(data, size)
 	local id = util.Base64Encode(data)
 
+	local exp = string.Explode("\n", id)
+	if #exp > 1 then
+		id = exp[1]
+	end
+
 	size = size and size or 256
 	data = string.Explode(" ", data)
 	data = table.concat(data, "%20")
