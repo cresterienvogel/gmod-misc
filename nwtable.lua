@@ -21,27 +21,30 @@ end
 
 local meta = FindMetaTable("Entity")
 function meta:SetNWTable(name, value, key)
-	local tbl = {}
-	if key then
-		tbl[key] = value
-	else
-		table.insert(tbl, value)
+	self.NWTables = self.NWTables or {}
+	if not self.NWTables[name] then
+		self.NWTables[name] = {}
 	end
 
-	self.NWTables = self.NWTables or {}
-	self.NWTables[name] = tbl
+	if key ~= nil or value ~= nil then
+		if key then
+			self.NWTables[name][key] = value
+		else
+			table.insert(self.NWTables[name], value)
+		end
+	end
 
 	if SERVER then
 		net.Start("NWTable Broadcast")
 			net.WriteEntity(self)
 			net.WriteString(name)
-			net.WriteTable(tbl)
+			net.WriteTable(self.NWTables[name])
 		net.Broadcast()
 	end
 end
 
 function meta:GetNWTable(name)
-	return self.NWTables[name] or {}
+	return (self.NWTables and self.NWTables[name]) or {}
 end
 
 hook.Add("PlayerInitialSpawn", "NWTable Broadcast", function(pl)
