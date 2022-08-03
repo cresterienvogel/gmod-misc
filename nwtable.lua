@@ -23,15 +23,19 @@ else
 		local name = net.ReadString()
 		local tbl = net.ReadTable()
 
-		ent.NWTables = ent.NWTables or {}
-		ent.NWTables[name] = tbl
+		if IsValid(ent) then
+			ent.NWTables = ent.NWTables or {}
+			ent.NWTables[name] = tbl
+		end
 	end)
 
 	net.Receive("NWTable Broadcast Tables", function()
 		local ent = net.ReadEntity()
 		local tbl = net.ReadTable()
 
-		ent.NWTables = tbl
+		if IsValid(ent) then
+			ent.NWTables = tbl
+		end
 	end)
 end
 
