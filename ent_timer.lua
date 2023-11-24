@@ -8,12 +8,15 @@ function ent:SetSimpleTimer(delay, func)
 	end)
 end
 
-function ent:SetTimer(identifier, delay, repetitions, func)
+function ent:SetTimer(identifier, delay, repetitions, func, fallback)
 	local index = self:EntIndex()
 	timer.Create(index .. "[" .. identifier .. "]", delay, repetitions, function()
 		if IsValid(self) then
 			func()
 		else
+			if fallback then
+				fallback()
+			end
 			timer.Remove(index .. "[" .. identifier .. "]")	
 		end
 	end)
